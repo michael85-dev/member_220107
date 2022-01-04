@@ -1,0 +1,31 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.2'  // 버전 설명
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' // 스프링 디펜던시 버전
+    id 'java' // 작성 언어
+}
+
+group = 'com.ex'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies { //디펜던시에 대한 언급
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
