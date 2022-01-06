@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--xmlns~~ : thymeleaf를 쓰기 위해서 필요한 명령어 -->
+<!--lang은 검색 결과 서치시 해당 것을 기준으로 찾음. en을 안쓰게 되면 자꾸 번역하겠냐고 물어보거나 함.-->
+<head>
+    <meta charset="UTF-8">
+    <title>Save</title>
+    <style>
+        .field-error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h2>save page</h2>
+<!-- thymeleaf 이용 방법 -->
+<form action="/member/save" method="post" th:object="${member}">
+    <div th:if="${#fields.hasGlobalErrors()}"> <!-- 글로벌 오류가 있는지 따지기 위한 명령문. controller에 reject에 의해서 해당 문구를 사용할 수 있음. -->
+        <p class="field-error" th:each="err: ${#fields.globalErrors()}" th:text="${err}">글로벌 오류</p>
+    </div>
+    <div>
+    <!-- th:field="*{xxxx}" : xxxx로 id와 name 만들어줌 -> xxxx DTO에 있는 필드명   -->
+        아이디 : <input type="text" th:field="*{memberName}"> <br>
+            <p th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}" th:errorclass="field-error"></p>
+        비밀번호 : <input type="password" th:field="*{memberPassword}"> <br>
+            <p th:if="${#fields.hasErrors('memberPassword')}" th:errors="*{memberPassword}" th:errorclass="field-error"></p>
+        이메일 : <input type="email" th:field="*{memberEmail}"> <br>
+        <!--    binding~~~ 에 관련되어서 적어주는 것 -->
+             <p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" th:errorclass="field-error"></p>
+    </div>
+    <div class="text-end">
+        <input type="submit" value="회원가입"> <br>
+    </div>
+</form>
+
+<!-- 일반 방법
+    <form action="/member/save" method="post" >-->
+<!--    아이디 : <input type="text" name="memberMame"> <br>-->
+<!--    비밀번호 : <input type="password" name="memberPassword"> <br>-->
+<!--    이메일 : <input type="email" name="memberEmail"> <br>-->
+<!--    <input type="submit" value="회원가입"> <br>-->
+<!--</form>-->
+</body>
+</html>

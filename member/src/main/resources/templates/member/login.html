@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <style>
+        .field-error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h2>login page</h2>
+<form action="/member/login" method="post" th:object="${login}">
+    <div th:if="${#fields.hasGlobalErrors()}"> <!-- 글로벌 오류가 있는지 따지기 위한 명령문. controller에 reject에 의해서 해당 문구를 사용할 수 있음. -->
+        <p class="field-error" th:each="err: ${#fields.globalErrors()}" th:text="${err}">글로벌 오류</p>
+    </div>
+    <div>
+        이메일 : <input type="email" th:field="*{memberEmail}"> <br>
+        <!--    binding~~~ 에 관련되어서 적어주는 것 -->
+            <p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" th:errorclass="field-error"></p>
+        비밀번호 : <input type="password" th:field="*{memberPassword}"> <br>
+            <p th:if="${#fields.hasErrors('memberPassword')}" th:errors="*{memberPassword}" th:errorclass="field-error"></p>
+    </div>
+    <div class="text-end">
+        <input type="submit" value="로그인"> <br>
+    </div>
+</form>
+</body>
+</html>
