@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>findAll.html</title>
+</head>
+<body>
+<h2>findAll.html</h2>
+<table>
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>이메일</th>
+            <th>비밀번호</th>
+            <th>이름</th>
+            <th>조회</th>
+            <th>조회(ajax)</th>
+            <th>수정</th>
+            <th>삭제(get)</th>
+            <th>삭제(delete)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="member: ${mList}">
+            <td th:text="${member.memberId}">번호</td>
+            <td th:text="${member.memberEmail}">이메일</td>
+            <td th:text="${member.memberPassword}">비밀번호</td>
+            <td th:text="${member.memberName}">이름</td>
+            <td>
+                <a th:href="@{|/member/${member.memberId}|}">조회</a> <!-- 타임리프 사용 -->
+<!--           기존 href="/member/detail?memberId=${member.memberId} -->
+            </td>
+            <td>조회(ajax)</td>
+            <td>
+                <a th:href="@{|/member/${member.memberId}|}">수정</a>
+<!--                <a href="/member/update?memberId=${member.memberId}">수정</a>-->
+            </td>
+            <td>
+                <a href="/member/delete?memberId=${member.memberId}">삭제(get)</a>
+            </td>
+            <td>
+                <a th:href="@{|/member/${member.memberId}|}"삭제(delete)</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
