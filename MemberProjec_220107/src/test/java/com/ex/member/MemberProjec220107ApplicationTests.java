@@ -1,10 +1,10 @@
-package com.hmh.moneymanager;
+package com.ex.member;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MoneyManagerApplicationTests {
+class MemberProjec220107ApplicationTests {
 
     @Test
     void contextLoads() {
