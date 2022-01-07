@@ -81,4 +81,28 @@ public class MemberController {
 
         return "member/findById";
     }
+
+    @PostMapping("{memberId}")
+    public @ResponseBody MemberDetailDTO detail(@PathVariable("memberId") Long memberId) {
+        // 만약 mapping의 이름이랑 Pathvariable의 이름이 같다면 생략 가능 함.
+        // 즉 @PathVariable Long memberId로 가능
+        MemberDetailDTO mdDTO = ms.findById(memberId);
+
+        return mdDTO;
+    }
+
+    // 회원 삭제 Get 방식
+    @GetMapping("delete/{memberId}")
+    public String deleteGet(@PathVariable("memberId") Long memberId) {
+        ms.deleteById(memberId);
+
+        return "redirect:/member/findAll";
+    }
+
+    @DeleteMapping("{memberId}")
+    public String delete(@PathVariable("memberId") Long memberId) {
+
+
+        return "redirect:/member/findAll";
+    }
 }

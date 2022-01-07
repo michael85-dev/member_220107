@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>findAll.html</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
 <h2>findAll.html</h2>
@@ -30,19 +32,84 @@
                 <a th:href="@{|/member/${member.memberId}|}">조회</a> <!-- 타임리프 사용 -->
 <!--           기존 href="/member/detail?memberId=${member.memberId} -->
             </td>
-            <td>조회(ajax)</td>
+            <td>
+                <!-- 함수 호출 방식 이용 -->
+                <button th:onclick="detail([[${member.memberId}]])">조회(ajax)</button>
+                <!--                메서드  넘길데이터 보내는 명령어 ([[]]) -->
+            </td>
             <td>
                 <a th:href="@{|/member/${member.memberId}|}">수정</a>
 <!--                <a href="/member/update?memberId=${member.memberId}">수정</a>-->
             </td>
             <td>
-                <a href="/member/delete?memberId=${member.memberId}">삭제(get)</a>
+                <a th:href="@{|/member/delete/${member.memberId}|}">삭제(get)</a>
             </td>
             <td>
-                <a th:href="@{|/member/${member.memberId}|}"삭제(delete)</a>
+                <a th:href="@{|/member/${member.memberId}|}">삭제(delete)</a>
             </td>
         </tr>
     </tbody>
 </table>
+<div id="detail-view">
+
+</div>
 </body>
+<script>
+    function detail(memberId) {
+        console.log(memberId);
+        const reqUrl = "/member/" + memberId; // 요청 주소
+        $.ajax ({
+           type: 'post',
+           url: reqUrl,
+           dataType: 'json',
+           success: function(result) {
+                console.log(result);
+                const detail_view = document.getElementById('detail-view');
+                // let output = "<table>\n" +
+                //     "    <thead>\n" +
+                //     "        <tr>\n" +
+                //     "            <th>번호</th>\n" +
+                //     "            <th>이메일</th>\n" +
+                //     "            <th>비밀번호</th>\n" +
+                //     "            <th>이름</th>\n" +
+                //     "        </tr>\n" +
+                //     "    </thead>\n" +
+                //     "    <tbody>\n" +
+                //     "        <tr>\n" +
+                //     "            <td th:text=\"${member.memberId}\"></td>\n" +
+                //     "            <td th:text=\"${member.memberEmail}\"></td>\n" +
+                //     "            <td th:text=\"${member.memberPassword}\"></td>\n" +
+                //     "            <td th:text=\"${member.memberName}\"></td>\n" +
+                //     "        </tr>\n" +
+                //     "    </tbody>\n" +
+                //     "</table>";
+               // or
+               let output = "";
+               output += "<table>\n" +
+                   "    <thead>\n" +
+                   "        <tr>\n" +
+                   "            <th>번호</th>\n" +
+                   "            <th>이메일</th>\n" +
+                   "            <th>비밀번호</th>\n" +
+                   "            <th>이름</th>\n" +
+                   "        </tr>\n" +
+                   "    </thead>\n" +
+                   "    <tbody>\n" +
+                   "        <tr>\n" +
+                   "            <td>"+ result.memberId + "</td>\n" +
+                   "            <td>"+ result.memberEmail + "</td>\n" +
+                   "            <td>" + result.memberPassword + "</td>\n" +
+                   "            <td>" + result.memberName + "</td>\n" +
+                   "        </tr>\n" +
+                   "    </tbody>\n" +
+                   "</table>";
+
+               detail_view.innerHTML = output;
+           },
+            error: function() {
+               alert('문제 발생');
+            }
+        });
+    }
+</script>
 </html>

@@ -69,4 +69,9 @@ public class MemberServiceImpl implements MemberService {
         //만약 1줄로 줄이면
 //        return MemberDetailDTO.toMDDTO(mr.findById(memberId).get());
     }
+
+    @Override
+    public void deleteById(Long memberId) {
+        mr.deleteById(memberId); //jpa에 명령어가 있으므로 자동 적용됨
+    }
 }
