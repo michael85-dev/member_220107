@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Money Manager</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
 <header>
 
 </header>
 <section>
-    <form action="/member/save" method="post" enctype="Multipart/form-data" th:object="${msave}">
+    <form action="/member/save" method="post" enctype="multipart/form-data" th:object="${msave}">
         <input type="text" th:field="*{memberEmail}" placeholder="가입하실 이메일을 입력하세요">
         <input type="password" th:field="*{memberPassword}" placeholder="사용할 비밀번호를 입력하세요">
         <input type="password" id="pwCheck" placeholder="비밀번호를 다시 입력해주세요">

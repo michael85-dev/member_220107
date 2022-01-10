@@ -1,11 +1,17 @@
 package com.hmh.mmp.service;
 
+import com.hmh.mmp.dto.MemberDetailDTO;
 import com.hmh.mmp.dto.MemberLoginDTO;
 import com.hmh.mmp.dto.MemberSaveDTO;
 import com.hmh.mmp.entity.MemberEntity;
 import com.hmh.mmp.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +53,48 @@ public class MemberServiceImpl implements MemberService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<MemberDetailDTO> findAll() {
+        List<MemberEntity> memberEntity = mr.findAll(); // Jpa의 findAll이란 명령어를 통해서 모든 데이터를 MemberEntity에 담는다.
+        List<MemberDetailDTO> memberDetailDTOList = new ArrayList<>();
+        for (MemberEntity m : memberEntity) {
+            memberDetailDTOList.add(MemberDetailDTO.toMemberDetailDTO(m)); // MemberDetailDTO 에 static 정의해준 메서드에 해당 entity의 데이터 담는다.
+        }
+
+        return memberDetailDTOList;
+    }
+
+    @Override
+    public MemberDetailDTO findById(Long memberId) {
+        // Entity(Repo)로 부터 데이터 를 가지고 와야함.
+        Optional<MemberEntity> member = mr.findById(memberId); // 데이터 찾아서 가지고 옴
+
+        MemberDetailDTO memberDetailDTO = MemberDetailDTO.toMemberDetailDTO(member.get());
+
+        return memberDetailDTO;
+//        return MemberDetailDTO.toMemberDetailDTO(mr.findById(memberId).get());
+    }
+
+    @Override
+    public void deleteById(Long memberId) {
+        mr.deleteById(memberId);
+    }
+
+    // session의 데이터를 가지고 모든 데이터 또는 부분 데이터를 가지고 오기 위한 메서드.
+    @Override
+    public MemberDetailDTO findByEmail(String memberEmail) {
+        MemberEntity memberEntity = mr.findByIdMemberEmail(memberEmail);
+        MemberDetailDTO memberDetailDTO = MemberDetailDTO.toMemberDetailDTO(memberEntity);
+
+        return memberDetailDTO;
+    }
+
+    @Override
+    public Long update(MemberDetailDTO memberDetailDTO) {
+        MemberEntity memberEntity = MemberEntity.updateMember(memberDetailDTO);
+        Long memberId = mr.save(memberEntity).getId(); // controller에서 페이지 호출을 하기 위해서 필요...
+        return memberId;
     }
 }

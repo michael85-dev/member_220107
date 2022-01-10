@@ -1,5 +1,6 @@
 package com.hmh.mmp.entity;
 
+import com.hmh.mmp.dto.MemberDetailDTO;
 import com.hmh.mmp.dto.MemberSaveDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,5 +42,18 @@ public class MemberEntity {
         mEntity.setMemberPhotoName(msDTO.getMemberPhotoName());
 
         return mEntity;
+    }
+
+    public static MemberEntity updateMember(MemberDetailDTO memberDetailDTO) {
+        MemberEntity memberEntity = new MemberEntity();
+
+        memberEntity.setMemberEmail(memberDetailDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDetailDTO.getMemberPassword());
+        memberEntity.setMemberName(memberDetailDTO.getMemberName());
+        memberEntity.setMemberPhone(memberDetailDTO.getMemberPhone());
+        memberEntity.setMemberMemo(memberDetailDTO.getMemberMemo());
+        memberEntity.setMemberPhotoName(memberDetailDTO.getMemberPhotoName());
+
+        return memberEntity;
     }
 }
