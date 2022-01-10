@@ -1,10 +1,12 @@
 package com.hmh.mmp.entity;
 
+import com.hmh.mmp.dto.MemberSaveDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.lang.reflect.Member;
 
 @Entity
 @Getter
@@ -27,4 +29,17 @@ public class MemberEntity {
     private String memberMemo;
     @Column
     private String memberPhotoName;
+
+    public static MemberEntity saveMember(MemberSaveDTO msDTO) {
+        MemberEntity mEntity = new MemberEntity();
+
+        mEntity.setMemberEmail(msDTO.getMemberEmail());
+        mEntity.setMemberPassword(msDTO.getMemberPassword());
+        mEntity.setMemberName(msDTO.getMemberName());
+        mEntity.setMemberPhone(msDTO.getMemberPhone());
+        mEntity.setMemberMemo(msDTO.getMemberMemo());
+        mEntity.setMemberPhotoName(msDTO.getMemberPhotoName());
+
+        return mEntity;
+    }
 }
