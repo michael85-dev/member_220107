@@ -1,5 +1,6 @@
 package com.ex.member.entity;
 
+import com.ex.member.dto.MemberDetailDTO;
 import com.ex.member.dto.MemberSaveDTO;
 import com.ex.member.service.MemberService;
 import lombok.Getter;
@@ -34,6 +35,17 @@ public class MemberEntity {
         // 위에 2줄을 한줄로 합쳐서 쓴게 아래의 두개
         mEntity.setMemberPassword(msDTO.getMemberPassword());
         mEntity.setMemberName(msDTO.getMemberName());
+
+        return mEntity;
+    }
+
+    public static MemberEntity updateMember(MemberDetailDTO mdDTO) {
+        MemberEntity mEntity = new MemberEntity();
+        String memberEmail = mdDTO.getMemberEmail();
+        mEntity.setMemberEmail(memberEmail);
+        mEntity.setId(mdDTO.getMemberId());
+        mEntity.setMemberName(mdDTO.getMemberName());
+        mEntity.setMemberPassword(mdDTO.getMemberPassword());
 
         return mEntity;
     }

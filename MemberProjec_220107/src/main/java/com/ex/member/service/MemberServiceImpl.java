@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,4 +75,29 @@ public class MemberServiceImpl implements MemberService {
     public void deleteById(Long memberId) {
         mr.deleteById(memberId); //jpa에 명령어가 있으므로 자동 적용됨
     }
+
+    @Override
+    public MemberDetailDTO findByEmail(String memberEmail) {
+        // Repository에서 가지고오는 것은 무조건 Entity 데이터임.
+        MemberEntity memberEntity = mr.findByMemberEmail(memberEmail);
+        // Entity에서 가지고온 데이터를 변환 해줘야 함
+        MemberDetailDTO mdDTO = MemberDetailDTO.toMDDTO(memberEntity);
+
+        return mdDTO;
+    }
+
+    @Override
+    public Long update(MemberDetailDTO mdDTO) {
+        // update 처리시 save 메서드 호출. -> Jpa가 값을 확인하고 적합한 id값이 있으면 해당 id 값에 덮어쓰기를 진행함. -> 즉 굳이 update 관련을 만들 필요는 없음..
+        // MemberDetailDTO -> MemberEntityDTO로 변경해야함.
+        // -> 바꾸고자 하는 대상 클래스에 메서드를 만들어 줘야함. : MemberEntity에 메서드 필요?
+        MemberEntity memberEntity = MemberEntity.updateMember(mdDTO);
+        Long memberId = mr.save(memberEntity).getId();
+        return memberId;
+    }
+
+//    @Override
+//    public MemberSaveDTO findByMemberEmail(HttpSession hs) {
+//        return mr.findByMemberEmail(h);
+//    }
 }

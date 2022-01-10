@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
 //                mList.get(i).setMemberEmail(e.getMemberEmail());
 //            }
 //        }
-        // 만약 맞게 하려면
+        // 만약 맞게 하려면 -> 매칭 대문에.
 //        List<MemberDetailDTO> mList = new ArrayList<MemberDetailDTO>();
 //        for (int j = 0; j < memberEntityList.size(); j++) {
 //            for (int i = 0; i < mList.size(); i++) {

@@ -45,7 +45,10 @@
                 <a th:href="@{|/member/delete/${member.memberId}|}">삭제(get)</a>
             </td>
             <td>
-                <a th:href="@{|/member/${member.memberId}|}">삭제(delete)</a>
+<!--            삭제 버튼 클릭시 delete 함수 호출.
+                함수 호출하면서 memberId 넘겨야 함
+                delete 함수() : /member/memberId 형태로 주소를 요청하며, 요청 메서드는 delete-->
+                <button th:onclick="deleteById([[${member.memberId}]])">삭제(delete)</button>
             </td>
         </tr>
     </tbody>
@@ -55,6 +58,23 @@
 </div>
 </body>
 <script>
+    function deleteById(memberId) {
+        console.log(memberId);
+        const reqUrl = "/member/" + memberId;
+        $.ajax({
+           type: 'delete',
+           url: reqUrl,
+//           dataType: 'json', -> 받아올 데이터가 있울 때만 사용함.
+           success: function() { // 상태코드가 ok로 날라오면 바로 success가 호출됨...
+               // 삭제 성공하면 회원 목록 페이지 다시 요청하도록 구성
+               location.href = '/member/'; // 회원 목록 페이지 요청은 다음과 같이 구성하였음. (주소를) 실제 요청 은 member/findAll 임)
+           },
+            error: function() {
+               alert('삭제 실패');
+            }
+        });
+    }
+
     function detail(memberId) {
         console.log(memberId);
         const reqUrl = "/member/" + memberId; // 요청 주소
@@ -111,5 +131,20 @@
             }
         });
     }
+    // 함수이름 : deletefn, 매개변수 : memberId 라는 의미.
+    const deleteFn = (memberId) => {
+        console.log(memberId);
+    }
+    /*
+        memberId deleteFn {
+            랑 같은 의미.
+        }
+     */
+
+    // 함수이름 : deleteFn2
+    const deleteFn2 = () => {
+        console.log();
+    }
+
 </script>
 </html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>mypage.html</h2>
+세선 : <p th:text="${session['loginEmail']}"></p> <!-- SessionConst의 왼쪽 값이 아닌 controller에서 처음 설정해준 값을 써야함. -->
+<!-- p태그는 블록 요소라서 자기 혼자 한 줄을 사용함. -->
+<a href="/member/update">정보 수정</a>
+<!-- 별도의 파라미터 넘겨줄 필요는 없음. 왜냐면 세션에 담겨 있기 때문에 자기 자신꺼만 수정이 됨 -> 꼬일이유가 없음...-->
+<!-- 정보수정 링크 클릭하면 update.html에 DB에 저장된 정보를 form, input 태그를 이용하여 출력합시다. 이름만 수정 가능하도록 합시다.-->
+</body>
+</html>
