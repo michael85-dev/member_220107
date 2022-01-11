@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ex.member.repository.MemberMapperRepository">
+<!--            MemberRepo에 있는 내용과 같아야함.-->
+<!--                                    application.yml에서 경로를 잡아줬으니 파일명만 적어도 됨-->
+    <select id="memberList" resultType="MemberMapperDTO">
+        select * from member_table
+    </select>
+<!--            MemberMapperRepo에 메서드 명이 id -->
+<!--    table 명은 Entity에서 생성되었으니... -->
+    <insert id="save" parameterType="MemberMapperDTO">
+        insert into member_table(member_email, member_password, member_name)
+            values (#{member_email}, #{member_password}, #{member_name})
+    </insert>
+</mapper>

@@ -46,8 +46,33 @@ public class MemberController {
         return "member/login";
     }
 
+    // 원래 방식
+//    @PostMapping("login")
+//    public String login(@ModelAttribute MemberLoginDTO mlDTO, BindingResult bResult, HttpSession hs) {
+//        boolean cResult = ms.login(mlDTO);
+//
+//        if (cResult) {
+//            hs.setAttribute("loginEmail", mlDTO.getMemberEmail()); // sessionScope.loginEmail(~~~)로 쓸떄 쓰는거.
+//            // 만약 common 패키지에 SessionConst로 설정을 해놨다면 하단 처럼도 사용 가능.
+//            hs.setAttribute(LOGIN_EMAIL, mlDTO.getMemberEmail());
+//
+////            return "redirect:/member/"; // <- 주소 값임... 이걸 많이 헷갈릴 수도 있음
+//            return "member/mypage";
+//        } else {
+//            bResult.reject("loginFail", "이메일 또는 비밀번호가 틀립니다.");
+//
+//            return "member/login";
+//        }
+//
+//    }
+
+    // interceptor 하고 나서의 방식
     @PostMapping("login")
-    public String login(@ModelAttribute MemberLoginDTO mlDTO, BindingResult bResult, HttpSession hs) {
+    // redirectURL 파라미터를 가지고 올 수 있게 설정해둔것 -> interceptor에 의해서.
+    public String login(@RequestParam(defaultValue = "/") String redirectURL, @ModelAttribute MemberLoginDTO mlDTO, BindingResult bResult, HttpSession hs) {
+        System.out.println("MemberController.login");
+        System.out.println("redirectURL = " + redirectURL);
+
         boolean cResult = ms.login(mlDTO);
 
         if (cResult) {
@@ -56,13 +81,20 @@ public class MemberController {
             hs.setAttribute(LOGIN_EMAIL, mlDTO.getMemberEmail());
 
 //            return "redirect:/member/"; // <- 주소 값임... 이걸 많이 헷갈릴 수도 있음
-            return "member/mypage";
+            return "redirect:" + redirectURL; // 사용자가 요청한 주소로 보내주기 위해서.
         } else {
             bResult.reject("loginFail", "이메일 또는 비밀번호가 틀립니다.");
 
             return "member/login";
         }
 
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "index";
     }
 
     //회원목록

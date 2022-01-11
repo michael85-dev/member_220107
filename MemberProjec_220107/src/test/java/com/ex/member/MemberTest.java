@@ -1,7 +1,9 @@
 package com.ex.member;
 
 import com.ex.member.dto.MemberDetailDTO;
+import com.ex.member.dto.MemberMapperDTO;
 import com.ex.member.dto.MemberSaveDTO;
+import com.ex.member.repository.MemberMapperRepository;
 import com.ex.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,8 @@ import java.util.stream.IntStream;
 public class MemberTest {
     @Autowired
     private MemberService ms;
+    @Autowired
+    private MemberMapperRepository mmr;
 
     @Test
     @DisplayName("회원 데이터 생성")
@@ -124,6 +128,32 @@ public class MemberTest {
 
         // 3. 4.
         assertThat(saveMemberName).isNotEqualTo(updateMemberName);
+    }
+
+    @Test
+    @DisplayName("Mybatis 목록 출력 테스트")
+    public void memberListTest() {
+        List<MemberMapperDTO> memberList = mmr.memberList();
+
+        for (MemberMapperDTO m: memberList) {
+            System.out.println("m.toString() = " + m.toString());
+        }
+
+        List<MemberMapperDTO> memberList2 = mmr.memberList();
+
+        for (MemberMapperDTO m: memberList2) {
+            System.out.println("m.toString() = " + m.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("mybatis 회원가입 테스트")
+    public void memberSaveTest() {
+        MemberMapperDTO memberMapperDTO = new MemberMapperDTO("회원이메일1", "회원비번1", "회원이름1");
+        mmr.save(memberMapperDTO);
+
+        MemberMapperDTO memberMapperDTO2 = new MemberMapperDTO("회원이메일12", "회원비번12", "회원이름12");
+        mmr.save2(memberMapperDTO);
     }
 
 }

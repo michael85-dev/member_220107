@@ -19,3 +19,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update # ?? 이게 뭔데? ddl : data definition language?
+
+# mybatis 관련 설정 (만약 사용할꺼라면... 적는 것..)
+mybatis:
+  # resources/mapper/ 에 있는 모든 xml 파일
+  mapper-locations: mapper/*.xml
+  # alias 설정
+  type-aliases-package: com.ex.member.dto
