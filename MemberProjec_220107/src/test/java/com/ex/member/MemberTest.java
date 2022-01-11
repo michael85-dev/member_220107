@@ -1,5 +1,6 @@
 package com.ex.member;
 
+import com.ex.member.dto.MemberDetailDTO;
 import com.ex.member.dto.MemberSaveDTO;
 import com.ex.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
@@ -91,4 +92,38 @@ public class MemberTest {
         });
 
     }
+
+    @Test
+    @Rollback
+    @Transactional // DB에 데이터를 테스트를 통해서 만들어진 것은 유지할 것인ㄴ지 아니면 후에 삭제할 것인지에 대한 것.
+    @DisplayName("회원 수정 테스트")
+    public void memberUpdateTest() {
+        /*
+            1. 신규회원 등록
+            2. 신규등록한 회원에 대한 수정
+            3. 신규등록시 사요안 이름과 DB에 저장된 이름이 일치하느지 판단.
+            4. 일치하지 않아야 테스트 통과
+         */
+        // 1.
+        String mEmail = "수정회원1";
+        String mPassword = "수정비번1";
+        String mName = "수정이름1";
+
+        MemberSaveDTO memberSaveDTO = new MemberSaveDTO(mEmail, mPassword, mName);
+        Long saveMemberId = ms.save(memberSaveDTO);
+
+        // 가입돈 이름 ㅈ회
+        String saveMemberName = ms.findById(saveMemberId).getMemberName();
+
+        // 2.
+        String updateName = "수정완료";
+        MemberDetailDTO updateMember = new MemberDetailDTO(saveMemberId, mEmail, mPassword, updateName);
+        ms.update(updateMember);
+        // 수정 후 이름 조회
+        String updateMemberName = ms.findById(saveMemberId).getMemberName();
+
+        // 3. 4.
+        assertThat(saveMemberName).isNotEqualTo(updateMemberName);
+    }
+
 }
