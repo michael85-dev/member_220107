@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+<form action="/board/save" method="post" th:object="${bsave}">
+    작성자 : <input type="text" th:field="*{boardWriter}">
+    비밀번호 : <input type="password" th:field="*{boardPassword}">
+    제목 : <input type="text" th:field="*{boardTitle}">
+    내용 : <textarea th:field="*{boardContents}" rows="5"></textarea>
+    <input type="submit" value="작성">
+    <button onclick="bTMain()">돌아가기</button>
+</form>
+</body>
+<script>
+    function bTMain() {
+        location.href="/index";
+    }
+</script>
+</html>

@@ -69,9 +69,9 @@ public class MemberController {
     // interceptor 하고 나서의 방식
     @PostMapping("login")
     // redirectURL 파라미터를 가지고 올 수 있게 설정해둔것 -> interceptor에 의해서.
-    public String login(@RequestParam(defaultValue = "/") String redirectURL, @ModelAttribute MemberLoginDTO mlDTO, BindingResult bResult, HttpSession hs) {
+    public String login(@ModelAttribute MemberLoginDTO mlDTO, BindingResult bResult, HttpSession hs) { // @RequestParam(defaultValue = "/") String redirectURL
         System.out.println("MemberController.login");
-        System.out.println("redirectURL = " + redirectURL);
+
 
         boolean cResult = ms.login(mlDTO);
 
@@ -81,7 +81,18 @@ public class MemberController {
             hs.setAttribute(LOGIN_EMAIL, mlDTO.getMemberEmail());
 
 //            return "redirect:/member/"; // <- 주소 값임... 이걸 많이 헷갈릴 수도 있음
-            return "redirect:" + redirectURL; // 사용자가 요청한 주소로 보내주기 위해서.
+
+            // 01.12일 변경된 것
+            String redirectURL = (String) hs.getAttribute("redirectURL");
+
+            System.out.println("redirectURL = " + redirectURL);
+            // 인터셉터를 거쳐서 오면 redirectURL에 값이 있을 것이고. 그냥 로그인을 해서 오면 redirectURL에 값이 있을 것이기 때문에
+            // if else로 구분을 함.
+            if (redirectURL != null) {
+                return "redirect:" + redirectURL; // 사용자가 요청한 주소로 보내주기 위해서.
+            } else {
+                return "redirect:/";
+            }
         } else {
             bResult.reject("loginFail", "이메일 또는 비밀번호가 틀립니다.");
 

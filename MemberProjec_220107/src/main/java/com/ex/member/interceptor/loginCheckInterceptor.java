@@ -28,7 +28,10 @@ public class loginCheckInterceptor implements HandlerInterceptor {
             // 미 로그인 상태
             // 로그인을 하지 않은 경우 바로 로그인 페이지로 보냄.
             // 로그인을 하면 요청한 화면을 보여줌.
-            response.sendRedirect("/member/login?redirectURL="+requestURI);
+//            response.sendRedirect("/member/login?redirectURL="+requestURI);
+
+            session.setAttribute("redirectUTL", requestURI);
+            response.sendRedirect("/member/login");
 
             return false;
         } else {
@@ -40,3 +43,12 @@ public class loginCheckInterceptor implements HandlerInterceptor {
     }
 
 }
+
+
+// 오류가 발생했는데 로그인 하면 다시 / 페이지로 감.
+/*
+    문제가 발생한 이유
+    - 사용자가 요청한 주소 값을 가지고 login.html 페이지로 갔는데.
+      로그인을 하고 났을 때 요청한 주소값을 실행 시키지 못함/.(즉 주소값을 안가지고 가고 그냥 기본 값만 실행이 되게 만듬)
+
+ */

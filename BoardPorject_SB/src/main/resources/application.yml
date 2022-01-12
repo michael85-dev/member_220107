@@ -1,0 +1,20 @@
+# 서버
+server:
+  port: 8093
+
+#DB 접속 정보
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/--?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: --
+    password: --
+  thymeleaf:
+    cache: false
+
+    #JPA
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # mysql의 엔진을 쓴다 라는 개념.
+    show-sql: true
+    hibernate:
+      ddl-auto: update

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+<form action="/board/update" method="post" th:object="${board}">
+    번호 : <input type="text" th:field="*{boardId}" th:value="${board.boardId}" readonly>
+    작성자 : <input type="text" th:field="*{boardWriter}" th:value="${board.boardWriter}" readonly>
+    제목 : <input type="text" th:field="*{boardTitle}" th:value="${board.boardTitle}">
+    내용 : <textarea th:field="*{boardContents}" th:value="${board.boardContents}"></textarea>
+    작성일 : <input type="text" th:value="${board.boardDate}">
+    <input type="submit" value="수정"><button th:onclick="bTMain()">돌아가기</button>
+
+</form>
+
+</body>
+<script>
+    function bTMain() {
+        location.href="/board/findAll";
+    }
+</script>
+</html>

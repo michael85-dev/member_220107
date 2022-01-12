@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+<tabe>
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>날짜</th>
+            <th>조회</th>
+            <th>수정</th>
+            <th>삭제</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="board: ${bList}">
+            <td th:text="${board.boardId}">번호</td>
+            <td th:text="${board.boardWriter}">작성자</td>
+<!--            <td th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></td>-->
+            <td>
+                <a th:href="@{|/board/${board.boardId}|}">
+                    <span th:text="${board.boardTitle}"></span>
+                </a>
+            </td>
+            <td th:text="${board.boardTitle}">제목</td>
+            <td th:text="${board.boardDate}">날짜</td>
+            <td th:onclick="detailAjax([[${board.boardId}]])">조회</td>
+            <td th:href="@{|/board/${board.boardId}|}">수정</td>
+            <td th:href="@{|/board/delete/${board.boardId}|}">삭제</td>
+        </tr>
+    </tbody>
+</tabe>
+<div id="detail_view">
+
+</div>
+</body>
+<script>
+    function detail(boardId) {
+        console.log('boardId');
+        const reqUrl = "/board/" + boardId;
+        $.ajax ({
+           type:'post',
+           url: reqUrl,
+           dataType: 'json',
+           success: function(result) {
+               console.log(result);
+               const detail_view = document.getElementById('detail_view');
+               let print = "";
+               print += "<table>\n" +
+                   "    <thead>\n" +
+                   "        <tr>\n" +
+                       "            <th>번호</th>\n" +
+                       "            <th>작성자</th>\n" +
+                       "            <th>제목</th>\n" +
+                       "            <th>내용</th>\n" +
+                       "            <th>날짜</th>\n" +
+                       "        </tr>\n" +
+                   "    </thead>\n" +
+                   "    <tbody>\n" +
+                   "        <tr>\n" +
+                       "            <td>"+ result.boardId + "</td>\n" +
+                       "            <td>"+ result.boardWriter + "</td>\n" +
+                       "            <td>" + result.boardTitle + "</td>\n" +
+                       "            <td>" + result.boardContents + "</td>\n" +
+                       "            <td>" + result.boardDate + "</td>\n" +
+                       "        </tr>\n" +
+                   "    </tbody>\n" +
+                   "</table>";
+
+               detail_view.innerHTML = print;
+           },
+            error: function() {
+               alert('ajax 실패');
+            }
+        });
+    }
+</script>
+</html>
