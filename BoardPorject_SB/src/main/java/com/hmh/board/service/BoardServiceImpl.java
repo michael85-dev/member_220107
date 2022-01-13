@@ -56,4 +56,13 @@ public class BoardServiceImpl implements BoardService{
 
         return boardDetailDTO;
     }
+
+    @Override
+    public Long update(BoardDetailDTO boardDetailDTO) {
+        BoardEntity boardEntity = BoardEntity.updateEntity(boardDetailDTO);
+
+        Long getId = br.save(boardEntity).getId();
+
+        return getId;
+    }
 }

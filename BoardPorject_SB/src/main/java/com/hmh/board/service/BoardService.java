@@ -11,4 +11,6 @@ public interface BoardService {
     List<BoardDetailDTO> findAll();
 
     BoardDetailDTO findById(Long boardId);
+
+    Long update(BoardDetailDTO boardDetailDTO);
 }

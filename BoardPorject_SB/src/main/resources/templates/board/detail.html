@@ -12,12 +12,61 @@
     제목 : <input type="text" th:field="*{boardTitle}" th:value="${board.boardTitle}">
     내용 : <textarea th:field="*{boardContents}" th:value="${board.boardContents}"></textarea>
     작성일 : <input type="text" th:value="${board.boardDate}">
-    <input type="submit" value="수정"><button th:onclick="bTMain()">돌아가기</button>
+
+    비밀번호 확인 : <input type="password" th:field="*{boardPassword}" th:value="${board.boardPassword}">
+
+    <input type="button" value="수정" id="pw" onclick="cPw()">
+    <input type="button" value="수정(ajax)" id="pwA" onclick="cPwAjax()">
+    <button th:onclick="bTMain()">돌아가기</button>
 
 </form>
+<form>
+    번호 : <input type="text" th:field="*{boardId}" th:value="${board.boardId}" readonly>
+    작성자 : <input type="text" th:field="*{boardWriter}" th:value="${board.boardWriter}" readonly>
+    제목 : <input type="text" th:field="*{boardTitle}" th:value="${board.boardTitle}">
+    내용 : <textarea th:field="*{boardContents}" th:value="${board.boardContents}"></textarea>
+    작성일 : <input type="text" th:value="${board.boardDate}">
 
+    비밀번호 확인 : <input type="password" th:field="*{boardPassword}" th:value="${board.boardPassword}">
+    <input type="submit" value="수정">
+</form>
 </body>
 <script>
+    function cPw() {
+        // location.href="/board/update";
+
+        const beforePw = '${board.boardPassword}';
+//        const beforePw = document.getElementById('boardPassword').value; //값을 어떻게 가지고 와야했더라?
+        const afterPw = document.getElementById('pw').value;
+
+        if (beforePw == afterPw) {
+            update_form.submit();
+        } else {
+            alert('실패');
+        }
+    }
+    function cPwAjax(boardId) {
+        const beforePw = '${board.boardPassword}';
+        const afterPw = document.getElementById('pwA').value;
+        console.log('beforePw');
+
+        if (beforePw == afterPw) {
+            $.ajax({
+               type:'put',
+                url: "/board/" + boardId;
+               success: function() {
+                   location.href="/board/findAll";
+               },
+                error: function() {
+                   alert('실패');
+                }
+            });
+        } else {
+            alert('실패');
+        }
+
+    }
+
     function bTMain() {
         location.href="/board/findAll";
     }

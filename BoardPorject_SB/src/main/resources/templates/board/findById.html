@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<tabe>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>작성자</th>
+        <th>제목</th>
+        <th>날짜</th>
+        <th>내용</th>
+        <th>수정</th>
+        <th>삭제</th>
+    </tr>
+    </thead> <br>
+    <tbody>
+    <tr> <!-- 빨간 줄은 현재 데이터를 이곳에 보내주지 않기 때문 . -->
+        <td th:text="${board.boardId}">번호</td>
+        <td th:text="${board.boardWriter}">작성자</td>
+        <!--            <td th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></td>-->
+        <td th:text="${board.boardTitle}">제목</td>
+        <!--            <td th:text="${board.boardTitle}">제목</td>-->
+        <td th:text="${board.boardDate}">날짜</td>
+        <td th:text="${board.boardContents}">내용</td>
+        <a th:href="@{|/board/update/${board.boardId}|}">수정</a>
+    </tr>
+    </tbody>
+</tabe>
+</body>
+</html>

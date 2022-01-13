@@ -6,6 +6,9 @@ import com.hmh.board.service.BoardService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +63,67 @@ public class BoardController {
 
         model.addAttribute("board", boardDetailDTO);
 
-        return "board/detail";
+        return "board/findById";
+//        return "board/detail";
     }
+
+    // responsebody를 사용한 Detail 조회 방법 (detailAjax)
+//    @PostMapping("{boardId}")
+//    public @ResponseBody BoardDetailDTO detail(@PathVariable("boardId") Long boardId) {
+//        BoardDetailDTO board = bs.findById(boardId);
+//
+//        return board;
+//    }
 
     @PostMapping("{boardId}")
-    public @ResponseBody BoardDetailDTO detail(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity findById2(@PathVariable Long boardId) {
         BoardDetailDTO board = bs.findById(boardId);
 
-        return board;
+        return new ResponseEntity<BoardDetailDTO>(board, HttpStatus.OK);
+        //                         DTO 부부는 생략이 가능하지만 명명해주는 것이 좋음 <- 안헷갈림.
     }
+
+    // My T
+//    @PostMapping("{boardId}")
+//    public String update(@PathVariable("boardId") Long boardId, @ModelAttribute BoardDetailDTO boardDetailDTO) {
+//        boardId = bs.update(boardDetailDTO);
+//
+//        return "/board/findAll";
+//    }
+//
+//    @PutMapping("{boardId}")
+//    public ResponseEntity updateAjax(@PathVariable("boardId") Long boardId, @ModelAttribute BoardDetailDTO boardDetailDTO) {
+//        boardId = bs.update(boardDetailDTO);
+//        if (boardId != null) {
+//            return new ResponseEntity(HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//        }
+//
+//    }
+
+    // By T
+    @GetMapping("/update/{boardId}")
+    public String updateForm(@PathVariable Long boardId, Model model) {
+        BoardDetailDTO board = bs.findById(boardId);
+        model.addAttribute("b", new BoardDetailDTO());
+        model.addAttribute("board", board);
+
+        return "board/update";
+    }
+
+    @PostMapping("/uodate")
+    public String update(@ModelAttribute BoardDetailDTO boardDetailDTO) {
+
+        bs.update(boardDetailDTO);
+        return "redirect:/board/" + boardDetailDTO.getBoardId(); //DTO에 담고 있기 때문에 그렇슴...
+    }
+
+    @PutMapping("{boardId}") // 주소 체계 차이 떄문에
+    public ResponseEntity updateAjax(@RequestBody BoardDetailDTO boardDetailDTO) { // ResponseEntity 를 쓸 때는 반드시 @ResponseBody로 받아야함.
+        bs.update(boardDetailDTO);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

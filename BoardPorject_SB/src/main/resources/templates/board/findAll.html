@@ -14,10 +14,11 @@
             <th>제목</th>
             <th>날짜</th>
             <th>조회</th>
+            <th>조회 by script</th>
             <th>수정</th>
             <th>삭제</th>
         </tr>
-    </thead>
+    </thead> <br>
     <tbody>
         <tr th:each="board: ${bList}">
             <td th:text="${board.boardId}">번호</td>
@@ -25,12 +26,13 @@
 <!--            <td th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></td>-->
             <td>
                 <a th:href="@{|/board/${board.boardId}|}">
-                    <span th:text="${board.boardTitle}"></span>
+                    <span th:text="${board.boardTitle}"></span> <!-- 제목을 눌러서 내부 상황 보기 설정 -->
                 </a>
             </td>
-            <td th:text="${board.boardTitle}">제목</td>
+<!--            <td th:text="${board.boardTitle}">제목</td>-->
             <td th:text="${board.boardDate}">날짜</td>
-            <td th:onclick="detailAjax([[${board.boardId}]])">조회</td>
+            <td th:onclick="detailAjax([[${board.boardId}]])">조회(By Ajax)</td>
+            <th><button th:onclick="detailAjax2([[${board.boardId}]])">조회(script by Ajax)</button></th>
             <td th:href="@{|/board/${board.boardId}|}">수정</td>
             <td th:href="@{|/board/delete/${board.boardId}|}">삭제</td>
         </tr>
@@ -41,7 +43,7 @@
 </div>
 </body>
 <script>
-    function detail(boardId) {
+    function detailAjax(boardId) {
         console.log('boardId');
         const reqUrl = "/board/" + boardId;
         $.ajax ({
@@ -77,6 +79,47 @@
            },
             error: function() {
                alert('ajax 실패');
+            }
+        });
+    }
+
+    const detailAjax2 = (boardId) => {
+        console.log(boardId);
+        const reqUrl = "/board/" + boardId;
+        $.ajax ({
+            type: 'post',
+            url: reqUrl,
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+
+                const detail_view = document.getElementById('detail_view');
+                let print = "";
+                print += "<table>\n" +
+                    "    <thead>\n" +
+                    "        <tr>\n" +
+                    "            <th>번호</th>\n" +
+                    "            <th>작성자</th>\n" +
+                    "            <th>제목</th>\n" +
+                    "            <th>내용</th>\n" +
+                    "            <th>날짜</th>\n" +
+                    "        </tr>\n" +
+                    "    </thead>\n" +
+                    "    <tbody>\n" +
+                    "        <tr>\n" +
+                    "            <td>"+ result.boardId + "</td>\n" +
+                    "            <td>"+ result.boardWriter + "</td>\n" +
+                    "            <td>" + result.boardTitle + "</td>\n" +
+                    "            <td>" + result.boardContents + "</td>\n" +
+                    "            <td>" + result.boardDate + "</td>\n" +
+                    "        </tr>\n" +
+                    "    </tbody>\n" +
+                    "</table>";
+
+                detail_view.innerHTML = print;
+            },
+            error: function () {
+                alert('ajax 실패');
             }
         });
     }
