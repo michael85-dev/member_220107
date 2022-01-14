@@ -1,7 +1,10 @@
 package com.hmh.board.service;
 
 import com.hmh.board.dto.BoardDetailDTO;
+import com.hmh.board.dto.BoardPageDTO;
 import com.hmh.board.dto.BoardSaveDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,4 +16,6 @@ public interface BoardService {
     BoardDetailDTO findById(Long boardId);
 
     Long update(BoardDetailDTO boardDetailDTO);
+
+    Page<BoardPageDTO> paging(Pageable pageable);
 }
