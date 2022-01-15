@@ -85,7 +85,7 @@ public class BoardServiceImpl implements BoardService{
         // Page<BoardEntity> -> Page<BoardPagingDTO>
         // 만약 그냥 옴겨담으면 Entity에서 제공하는 메서드를 하나도 못쓰기 때문에 방법을 다르게 담아야 함.
 
-        Page<BoardPageDTO> boardList = boardEntities.map(
+        Page<BoardPageDTO> boardList = boardEntityList.map(
                 // board : Entity 객체를 담기위한 반복용 변수 : 명명 자유
                 // ex: forEach 사용할 때 b 이런식으로 적은거랑 같은 것
                 board -> new BoardPageDTO(board.getId(),
