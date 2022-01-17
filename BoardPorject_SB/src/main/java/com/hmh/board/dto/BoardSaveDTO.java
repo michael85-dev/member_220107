@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardSaveDTO {
-//    private Long memberId;
+    private Long memberId;
 //    private Long boardId; // 이걸 만들어야 할 필요가 있을까?
     private String boardWriter;
     private String boardPassword;

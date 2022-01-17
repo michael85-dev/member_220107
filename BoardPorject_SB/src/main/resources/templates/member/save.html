@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <form action="/member/save" method="post" th:object="${save}">
+        아이디 : <input type="text" th:field="*{memberEmail}" placeholder="aaa@aaaa.com">
+        비밀번호 : <input type="password" th:field="*{memberPassword}" placeholder="20자리 미만">
+        이름 : <input type="text" th:field="*{memberName}" placeholder="이름">
+        <input type="submit" value="회원가입">
+        <input type="button" value="취소" onclick="bToMain()">
+
+    </form>
+</body>
+<script>
+    function bToMain() {
+
+    }
+</script>
+</html>

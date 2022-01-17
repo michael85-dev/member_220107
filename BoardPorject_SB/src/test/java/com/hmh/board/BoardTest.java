@@ -3,9 +3,12 @@ package com.hmh.board;
 import com.hmh.board.common.PagingConst;
 import com.hmh.board.dto.BoardPageDTO;
 import com.hmh.board.dto.BoardSaveDTO;
+import com.hmh.board.dto.CommentSaveDTO;
 import com.hmh.board.entity.BoardEntity;
 import com.hmh.board.repository.BoardRepository;
+import com.hmh.board.repository.CommentRepository;
 import com.hmh.board.service.BoardService;
+import com.hmh.board.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,12 @@ public class BoardTest {
 
     @Autowired
     private BoardRepository br;
+
+    @Autowired
+    private CommentRepository cr;
+
+    @Autowired
+    private CommentService cs;
 
     @Test
     @DisplayName("게시판 생성")
@@ -80,5 +89,49 @@ public class BoardTest {
         );
 
         System.out.println("boardList.getTotalElements() = " + boardList.getTotalElements()); // 이것처럼 메서드 사용 가능.
+    }
+
+    @Test
+    @Transactional // 연관 관계가 있을때 해줘야 함.
+    @DisplayName("댓글 작성 코멘트 달기?")
+    public void CommnetTest(CommentSaveDTO commentSaveDTO) {
+        // try 1
+//        BoardEntity boardEntity = new BoardEntity();
+//        Long boardId = boardEntity.getId();
+////        String CommentWriter = null;
+////        String CommentContensts = null;
+//
+////        CommentSaveDTO commentSaveDTO = new CommentSaveDTO(boardId, "CommentWriter", "CommentContents");
+//
+//
+//        IntStream.rangeClosed(1, 30).forEach(i -> {
+//            cs.save(new CommentSaveDTO(boardId ,"commentWriter" + i, "commentContents" + i));
+//        });
+//
+//        cs.save(commentSaveDTO);
+
+        // try 2
+
+        Long boardId = null;
+
+        IntStream.rangeClosed(1, 30).forEach(i -> {
+            bs.save(new BoardSaveDTO("boardWriter" + i, "boardPassword" + i, "boardTitle" + i, "boardContents"+ i));
+        });
+
+        boardId = new BoardEntity().getId();
+
+        Long finalBoardId = boardId;
+        IntStream.rangeClosed(1, 20).forEach(i -> {
+            cs.save(new CommentSaveDTO(finalBoardId, "commentWriter"+ i, "commentContents"+ i));
+        });
+
+        // commentTest에서 보자
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("게시글 삭제")
+    public void boardDelete() {
+        br.deleteById(1L); // 이렇게 하면 에러가 발생함. -> 밑에 딸린 데이터가 존재하기 때문에.
     }
 }

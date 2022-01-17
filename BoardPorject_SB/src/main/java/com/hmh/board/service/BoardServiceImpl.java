@@ -5,7 +5,9 @@ import com.hmh.board.dto.BoardDetailDTO;
 import com.hmh.board.dto.BoardPageDTO;
 import com.hmh.board.dto.BoardSaveDTO;
 import com.hmh.board.entity.BoardEntity;
+import com.hmh.board.entity.MemberEntity;
 import com.hmh.board.repository.BoardRepository;
+import com.hmh.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository br;
+    private final MemberRepository mr;
 
     @Override
     public Long save(BoardSaveDTO boardSaveDTO) {
@@ -93,6 +96,23 @@ public class BoardServiceImpl implements BoardService{
                         board.getBoardTitle())
         );
 
+
+        return boardList;
+    }
+
+    @Override
+    public List<BoardDetailDTO> findAll(Long memberId) {
+        Optional<MemberEntity> memberEntityOptional = mr.findById(memberId);
+        MemberEntity memberEntity = memberEntityOptional.get();
+
+        List<BoardEntity> boardEntityList = memberEntity.getBoardEntityList();
+
+        List<BoardDetailDTO> boardList = new ArrayList<>();
+
+        for (BoardEntity b: boardEntityList) {
+            BoardDetailDTO boardDetailDTO = BoardDetailDTO.toBoardDetailDTO(b);
+            boardList.add(boardDetailDTO);
+        }
 
         return boardList;
     }

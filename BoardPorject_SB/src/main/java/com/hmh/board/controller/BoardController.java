@@ -4,7 +4,9 @@ import com.hmh.board.common.PagingConst;
 import com.hmh.board.dto.BoardDetailDTO;
 import com.hmh.board.dto.BoardPageDTO;
 import com.hmh.board.dto.BoardSaveDTO;
+import com.hmh.board.dto.MemberLoginDTO;
 import com.hmh.board.service.BoardService;
+import com.hmh.board.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +23,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.hmh.board.common.Const.LOGIN;
+import static com.hmh.board.common.Const.LOGIN_ID;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
 @Slf4j // log를 기록할 수 있는 것.
 public class BoardController {
     private final BoardService bs;
+    private final MemberService ms;
 
     @GetMapping("/save")
     public String saveForm(Model model) {
@@ -42,6 +48,43 @@ public class BoardController {
 
 //        return "redirect:/board/";
         return "index";
+    }
+
+    @GetMapping("/create")
+    public String createForm(Model model, HttpSession session) {
+//        MemberLoginDTO memberLoginDTO = new MemberLoginDTO();
+//        // 이게 아니라 session을 memberEntity를 통해서 Email로 뽑아내고 거기서 memberId를 뽑아내야 해.
+//
+//        Long memberId = memberLoginDTO.getMemberId();
+//        model.addAttribute("id", memberId);
+//
+//        model.addAttribute("csave", new BoardSaveDTO());
+
+        // Test 2
+        MemberLoginDTO memberLoginDTO = new MemberLoginDTO();
+
+        String memberEmail = (String)session.getAttribute(LOGIN);
+
+        memberLoginDTO = ms.findByEmail(memberEmail); // 지금 의미는 없음. (creaeteForm으로 보내는 것이 아니라.
+        // findById를 통해서 entity를 그대로 가지고 오니까. (session을 통해서 가지고 옴)
+        // 이것을 통해서 실제 저장할 때 해당 넘버를 저장하는 방식으로 데이터 관리를 진행할 수 있음
+        // 즉 해당 데이터를 관리하는데 있어서 CreateForm이 아니라 Create쪽으로 데이터를 넘기는 방식으로 해서 가는 것이 조금더 간결하게 갈 수 있음.
+
+        Long memberId = memberLoginDTO.getMemberId();
+        model.addAttribute("id", memberId);
+
+        model.addAttribute("csave", new BoardSaveDTO());
+
+        return "/board/create";
+    }
+
+    @PostMapping("/create")
+    public List<BoardDetailDTO> create(@ModelAttribute BoardSaveDTO boardSaveDTO) {
+        Long boardId = bs.save(boardSaveDTO);
+
+        List<BoardDetailDTO> boardDetailDTOList = bs.findAll(boardSaveDTO.getMemberId());
+
+        return boardDetailDTOList;
     }
 
     @GetMapping("/") //아무것도 적지 않으면 /board/가 넘어옴

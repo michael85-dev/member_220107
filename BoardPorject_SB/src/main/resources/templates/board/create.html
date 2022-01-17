@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+<form action="/board/create" method="post">
+    회원 번호 : <input type="text" name="memberId">
+    작성자 : <input type="text" name="boardWriter">
+    비밀번호 : <input type="password" name="boardPassword">
+    제목 : <input type="text" name="boardTitle">
+    내용 : <input type="text" name="boardContents">
+    <input type="submit" value="게시글작성">
+</form>
+</body>
+</html>

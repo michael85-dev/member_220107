@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+로그인 : <a th:text="${session['login']}"></a>
+
+<a href="/board/create">게시글 작성</a>
+<a href="/board/findAll">게시글 보기</a>
+</body>
+</html>

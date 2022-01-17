@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardProject</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <form action="/member/login" method="post" th:object="${login}">
+        아이디 : <input type="text" th:field="*{memberEmail}">
+        비밀번호 : <input type="password" th:field="*{memberPassword}">
+    </form>
+</body>
+</html>

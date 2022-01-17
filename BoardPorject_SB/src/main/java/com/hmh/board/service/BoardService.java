@@ -18,4 +18,6 @@ public interface BoardService {
     Long update(BoardDetailDTO boardDetailDTO);
 
     Page<BoardPageDTO> paging(Pageable pageable);
+
+    List<BoardDetailDTO> findAll(Long memberId);
 }
