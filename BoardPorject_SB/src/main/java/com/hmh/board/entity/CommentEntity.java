@@ -33,11 +33,12 @@ public class CommentEntity extends BaseEntity {
     @Column
     private String commentContents;
 
-    public static CommentEntity toSaveEntity(CommentSaveDTO commentSaveDTO, BoardEntity boardEntity) {
+    public static CommentEntity toSaveEntity(CommentSaveDTO commentSaveDTO, BoardEntity boardEntity, MemberEntity memberEntity) {
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setCommentContents(commentSaveDTO.getCommentContents());
         commentEntity.setCommentWriter(commentSaveDTO.getCommentWriter());
         commentEntity.setBoardEntity(boardEntity);
+        commentEntity.setMemberEntity(memberEntity);
 
         return commentEntity;
 

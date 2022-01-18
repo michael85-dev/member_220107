@@ -27,7 +27,10 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long save(BoardSaveDTO boardSaveDTO) {
-        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardSaveDTO);
+        // 22.01.18 추가분
+        MemberEntity memberEntity = mr.findByMemberEmail(boardSaveDTO.getBoardWriter());
+                                                                        // 22.01.18 추가분
+        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardSaveDTO, memberEntity);
 
         Long boardId = br.save(boardEntity).getId();
 
@@ -68,7 +71,8 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long update(BoardDetailDTO boardDetailDTO) {
-        BoardEntity boardEntity = BoardEntity.updateEntity(boardDetailDTO);
+
+        BoardEntity boardEntity = BoardEntity.updateEntity(boardDetailDTO, memberEntity);
 
         Long getId = br.save(boardEntity).getId();
 

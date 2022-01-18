@@ -4,8 +4,10 @@ import com.hmh.board.dto.CommentDetailDTO;
 import com.hmh.board.dto.CommentSaveDTO;
 import com.hmh.board.entity.BoardEntity;
 import com.hmh.board.entity.CommentEntity;
+import com.hmh.board.entity.MemberEntity;
 import com.hmh.board.repository.BoardRepository;
 import com.hmh.board.repository.CommentRepository;
+import com.hmh.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,16 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository cr;
     private final BoardRepository br; // boardId만 가지고 있지만 그걸 가지고 Entity데이터를 불러와서 넣어야 함.
-
+    private final MemberRepository mr;
     @Override
     public Long save(CommentSaveDTO commentSaveDTO) {
         Optional<BoardEntity> boardEntityOptional = br.findById(commentSaveDTO.getBoardId());
         BoardEntity boardEntity = boardEntityOptional.get();
 
-        CommentEntity commentEntity = CommentEntity.toSaveEntity(commentSaveDTO, boardEntity);
+        // 22.01.18 추가분
+        MemberEntity memberEntity = mr.findByMemberEmail(commentSaveDTO.getCommentWriter());
+                                                                                            // 22.01.18 추가분
+        CommentEntity commentEntity = CommentEntity.toSaveEntity(commentSaveDTO, boardEntity, memberEntity);
 
         Long commentId = cr.save(commentEntity).getId();
 

@@ -3,6 +3,7 @@ package com.hmh.board.service;
 import com.hmh.board.dto.BoardDetailDTO;
 import com.hmh.board.dto.BoardPageDTO;
 import com.hmh.board.dto.BoardSaveDTO;
+import com.hmh.board.entity.MemberEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -38,6 +38,7 @@ public class BoardEntity extends BaseEntity {
         // LAZY : 필요시 데이터 가지고옴.
     // SP JPA를 쓸 떄는 필요 없으나. 그냥 JPA를 쓰려면 flush, 메모리 관리등을 전부 해줘야함.
 
+    //회원 엔티티와의 연관관계.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
@@ -47,8 +48,9 @@ public class BoardEntity extends BaseEntity {
 //    private LocalDateTime boardDate;
     // 관련 내용은 BaseEntity에서 상속받아 옴.
 
-    public static BoardEntity toSaveEntity(BoardSaveDTO boardSaveDTO) {
+    public static BoardEntity toSaveEntity(BoardSaveDTO boardSaveDTO, MemberEntity memberEntity) {
         BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setMemberEntity(memberEntity);
         boardEntity.setBoardWriter(boardSaveDTO.getBoardWriter());
         boardEntity.setBoardPassword(boardSaveDTO.getBoardPassword());
         boardEntity.setBoardTitle(boardSaveDTO.getBoardTitle());
@@ -58,8 +60,9 @@ public class BoardEntity extends BaseEntity {
         return boardEntity;
     }
 
-    public static BoardEntity updateEntity(BoardDetailDTO boardDetailDTO) {
+    public static BoardEntity updateEntity(BoardDetailDTO boardDetailDTO, MemberEntity memberEntity) {
         BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setMemberEntity(memberEntity);
         boardEntity.setId(boardDetailDTO.getBoardId());
         boardEntity.setBoardWriter(boardDetailDTO.getBoardWriter());
         boardEntity.setBoardPassword(boardDetailDTO.getBoardPassword());

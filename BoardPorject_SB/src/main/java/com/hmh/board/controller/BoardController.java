@@ -1,10 +1,8 @@
 package com.hmh.board.controller;
 
 import com.hmh.board.common.PagingConst;
-import com.hmh.board.dto.BoardDetailDTO;
-import com.hmh.board.dto.BoardPageDTO;
-import com.hmh.board.dto.BoardSaveDTO;
-import com.hmh.board.dto.MemberLoginDTO;
+import com.hmh.board.dto.*;
+import com.hmh.board.entity.MemberEntity;
 import com.hmh.board.service.BoardService;
 import com.hmh.board.service.MemberService;
 import lombok.Getter;
@@ -43,6 +41,7 @@ public class BoardController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute BoardSaveDTO boardSaveDTO, HttpSession session) {
+
         Long boardId = bs.save(boardSaveDTO);
 //        session.setAttribute("loginId", boardSaveDTO.);
 
@@ -80,6 +79,8 @@ public class BoardController {
 
     @PostMapping("/create")
     public List<BoardDetailDTO> create(@ModelAttribute BoardSaveDTO boardSaveDTO) {
+
+
         Long boardId = bs.save(boardSaveDTO);
 
         List<BoardDetailDTO> boardDetailDTOList = bs.findAll(boardSaveDTO.getMemberId());
